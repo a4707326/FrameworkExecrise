@@ -52,9 +52,9 @@ public class Lobby : MonoBehaviour
     void Start()
     {
         Debug.Log("已進入遊戲大廳");
-        _name_txt.text = UserTable.instance["1"].name;
-        _money_txt.text = UserTable.instance["1"].money.ToString();
-        _avatar_Img.sprite = ResMgr.instance.GetSprite("Avatar", $"avatar_{UserTable.instance["1"].avatarID}");
+        _name_txt.text = UserData.instance.name;
+        _money_txt.text = UserData.instance.money.ToString();
+        _avatar_Img.sprite = ResMgr.instance.GetSprite("Avatar", $"avatar_{UserData.instance.avatarID}");
     }
 
     // Update is called once per frame

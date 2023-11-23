@@ -76,5 +76,16 @@ public class Net : Singleton<Net>, IClinet
         server.Recive(cmd);
     }
 
+    //檢查協議正確性
+    public static bool CheckCmd(Cmd cmd,Type targetType)
+    {
+        if (cmd.GetType() != targetType)
+        {
+            Debug.LogError($"S_需要{targetType}但收到{cmd.GetType()}");
+            return false;
+        }
+        return true;
+    }
+
    
 }

@@ -61,4 +61,6 @@ public class Server : Singleton<Server>, IServer
     {
         clinet.Recive(cmd);
     }
+
+
 }

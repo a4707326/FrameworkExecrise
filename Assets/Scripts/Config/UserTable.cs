@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 
 
-public class UserData : TableDB
+public class UserDB : TableDB
 {
     public string userID;
     public string name;
@@ -17,7 +17,7 @@ public class UserData : TableDB
 }
 
 
-public class UserTable : ConfigTable<UserData, UserTable>
+public class UserTable : ConfigTable<UserDB, UserTable>
 {
 
     public UserTable()

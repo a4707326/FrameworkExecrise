@@ -17,10 +17,15 @@ public class LoginCmd : Cmd
     public string password;
 }
 //S to C
-public class IsLoginSuccess : Cmd
+public class LoginSuccessCmd : Cmd
 {
+    public string userID;
+    public string name;
+    public int money;
+    public int avatarID;
 }
-public class IsLoginFaild : Cmd
+//S to C
+public class LoginFaildCmd : Cmd
 {
 }
 

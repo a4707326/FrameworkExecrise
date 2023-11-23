@@ -17,8 +17,8 @@ public class Login : MonoBehaviour
     {
         //instance = this;
         //註冊分發
-        Net.instance.parserDict.Add(typeof(IsLoginSuccess), LoginSuccess);
-        Net.instance.parserDict.Add(typeof(IsLoginFaild), LoginSuccess);
+        Net.instance.parserDict.Add(typeof(LoginSuccessCmd), LoginSuccess);
+        Net.instance.parserDict.Add(typeof(LoginFaildCmd), LoginSuccess);
 
         //元件初始化
         _account_IF = transform.Find<InputField>("Account_IF");
@@ -43,10 +43,6 @@ public class Login : MonoBehaviour
             Debug.Log("格式錯誤");
             return;
         }
-        //else
-        //{
-        //    return;
-        //}
 
         //鎖UI
         _account_IF.enabled = false;
@@ -79,6 +75,26 @@ public class Login : MonoBehaviour
     public void LoginSuccess(Cmd cmd)
     {
         Debug.Log("登入成功");
+
+        //LoginSuccessCmd data = cmd as LoginSuccessCmd;
+        //if (data == null)
+        //{
+        //    Debug.LogError($"S_需要{typeof(LoginSuccessCmd)}但收到{cmd.GetType()}");
+        //}
+
+        //檢查協議正確性
+        if (!Net.CheckCmd(cmd, typeof(LoginSuccessCmd))) return;
+
+
+        LoginSuccessCmd data = cmd as LoginSuccessCmd;
+        UserData.instance.userID = data.userID;
+        UserData.instance.name = data.name;
+        UserData.instance.money = data.money;
+        UserData.instance.avatarID = data.avatarID;
+
+        //UserData.instance.UserDataParse(cmd);
+
+
         SceneManager.LoadScene("Lobby");
 
 
