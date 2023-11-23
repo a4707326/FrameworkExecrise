@@ -51,6 +51,7 @@ public class Lobby : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Debug.Log("已進入遊戲大廳");
         _name_txt.text = UserTable.instance["1"].name;
         _money_txt.text = UserTable.instance["1"].money.ToString();
         _avatar_Img.sprite = ResMgr.instance.GetSprite("Avatar", $"avatar_{UserTable.instance["1"].avatarID}");

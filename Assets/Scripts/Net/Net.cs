@@ -18,13 +18,26 @@ public class Net : Singleton<Net>, IClinet
 {
     IServer server;
 
+    //分發解析器
+    public Dictionary<Type, Action<Cmd>> parserDict = new();
+
+    public Net()
+    {
+        //註冊要分發的消息
+        //parserDict.Add(typeof(IsLoginSuccess), Login.instance.LoginSuccess);
+    }
+
 
     public void Connect(Action successCallback,Action failedCallBack )
     {
         Debug.Log("開始服務器連接");
-        //給server附值
-        server = Server.instance.Connected(this);
 
+        //給server附值
+        server = Server.instance;
+        server.Connected(this);
+
+
+        //這裡開發階段只判定成功
         if ( true )
         {
             if (successCallback != null)
@@ -36,7 +49,7 @@ public class Net : Singleton<Net>, IClinet
         {
             if (failedCallBack != null)
             {
-                successCallback();
+                failedCallBack();
             }
         }
        
@@ -45,6 +58,17 @@ public class Net : Singleton<Net>, IClinet
     public void Recive(Cmd cmd)
     {
         Debug.Log("客戶端收到消息" + cmd.GetType());
+
+        //用消息解析器去分發任務
+        if (parserDict.ContainsKey(cmd.GetType()))
+        {
+            parserDict[cmd.GetType()](cmd);
+        }
+        else
+        {
+            Debug.Log($"S_未分發消息 {cmd.GetType()}");
+        }
+
     }
 
     public void SendCmd(Cmd cmd)

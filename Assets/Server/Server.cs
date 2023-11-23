@@ -9,7 +9,7 @@ using UnityEngine;
 
 public interface IServer
 {
-    IServer Connected(IClinet clinet);
+    void Connected(IClinet clinet);
     void SendCmd(Cmd cmd);
     void Recive(Cmd cmd);
 }
@@ -17,17 +17,44 @@ public interface IServer
 public class Server : Singleton<Server>, IServer
 {
     IClinet clinet;
-    public IServer Connected(IClinet clinet)
+
+    //分發解析器
+    Dictionary<Type,Action<Cmd>> parserDict = new ();
+
+    //暫時只保留一個玩家
+    public Player curPlayer;
+
+
+    public Server()
     {
-        Debug.Log("服務器收到連接");
+        //註冊要分發的消息
+        parserDict.Add(typeof(LoginCmd), CmdParser.OnLogin);
+    }
+
+
+    public void Connected(IClinet clinet)
+    {
+        Debug.Log("S_服務器收到連接");
         this.clinet = clinet;
-        return this;
+        //return this;
 
     }
 
     public void Recive(Cmd cmd)
     {
-        Debug.Log("服務器收到消息" + cmd.GetType());
+        Debug.Log("S_服務器收到消息" + cmd.GetType());
+
+        //用消息解析器去分發任務
+        if (parserDict.ContainsKey(cmd.GetType())) 
+        {
+            parserDict[cmd.GetType()](cmd);
+        }
+        else 
+        {
+            Debug.Log($"S_未分發消息 {cmd.GetType()}");
+        }
+
+
     }
 
     public void SendCmd(Cmd cmd)
